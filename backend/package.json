@@ -1,0 +1,34 @@
+{
+  "name": "moodle-tools-backend",
+  "version": "0.1.0",
+  "description": "Backend Express para Moodle Tools",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/controllers/authController.js && node --check src/controllers/uploadController.js && node --check src/controllers/toolController.js && node --check src/controllers/userController.js && node --check src/controllers/historyController.js && node --check src/controllers/mappingController.js && node --check src/middleware/uploadMiddleware.js && node --check src/services/excelService.js && node --check src/services/fileStorageService.js && node --check src/services/rutService.js && node --check src/services/textNormalizeService.js && node --check src/services/moodleService.js && node --check src/services/moodleTransformService.js && node --check src/services/validationService.js && node --check src/utils/rut.js && node --check src/utils/text.js && node --check src/utils/columnDetector.js"
+  },
+  "keywords": [
+    "moodle",
+    "excel",
+    "xlsx",
+    "express"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "busboy": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mysql2": "^3.12.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

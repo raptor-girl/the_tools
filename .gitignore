@@ -1,0 +1,14 @@
+node_modules/
+.env
+backend/uploads/*
+backend/exports/*
+!backend/uploads/.gitkeep
+!backend/exports/.gitkeep
+*.log
+tmp-*.out
+tmp-*.err
+backend/tmp-*.out
+backend/tmp-*.err
+frontend/tmp-*.out
+frontend/tmp-*.err
+.DS_Store

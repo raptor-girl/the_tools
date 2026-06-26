@@ -1,0 +1,20 @@
+{
+  "name": "moodle-tools-frontend",
+  "version": "0.1.0",
+  "description": "Frontend simple para Moodle Tools",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check src/services/api.js && node --check src/components/dom.js && node --check src/pages/app.js"
+  },
+  "keywords": [
+    "moodle",
+    "excel",
+    "frontend"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  }
+}

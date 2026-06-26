@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moodle Tools</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div id="loginView" class="auth-shell">
+      <section class="auth-panel">
+        <div>
+          <p class="eyebrow">Uso interno</p>
+          <h1>Moodle Tools</h1>
+          <p class="muted">Normaliza archivos Excel, RUTs y textos para uso interno.</p>
+        </div>
+
+        <form id="loginForm" class="stack">
+          <label>
+            Email
+            <input id="loginEmail" type="email" value="admin@moodletools.local" required />
+          </label>
+          <label>
+            Password
+            <input id="loginPassword" type="password" value="admin123" required />
+          </label>
+          <button class="primary-button" type="submit">Entrar</button>
+          <p id="loginMessage" class="message"></p>
+        </form>
+      </section>
+    </div>
+
+    <div id="appView" hidden>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Moodle Tools</p>
+          <h1>Herramientas de normalizacion</h1>
+        </div>
+        <div class="topbar-actions">
+          <span id="apiStatus" class="status-pill">API pendiente</span>
+          <span id="currentUser" class="user-pill"></span>
+          <button id="logoutButton" class="ghost-button" type="button">Salir</button>
+        </div>
+      </header>
+
+      <main class="app-shell">
+        <nav class="tool-switch" aria-label="Herramientas principales">
+          <button class="tool-tab active" data-tool="moodle" type="button">
+            Normalizar Excel
+          </button>
+          <button class="tool-tab" data-tool="rut" type="button">Normalizar RUT</button>
+          <button class="tool-tab" data-tool="text" type="button">Normalizar textos</button>
+        </nav>
+
+        <section id="moodleTool" class="tool-section active" data-tool-panel="moodle">
+          <section class="workspace">
+            <nav class="wizard-steps" aria-label="Pasos">
+              <button class="step active" data-step="1" type="button">1. Subir</button>
+              <button class="step" data-step="2" type="button">2. Revisar</button>
+              <button class="step" data-step="3" type="button">3. Mapear</button>
+              <button class="step" data-step="4" type="button">4. Validar y descargar</button>
+            </nav>
+
+            <section class="wizard-panel" data-panel="1">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Paso 1</p>
+                  <h2>Subir archivo Excel</h2>
+                </div>
+              </div>
+              <form id="uploadForm" class="upload-box">
+                <input id="excelFile" type="file" accept=".xlsx,.xls" required />
+                <button class="primary-button" type="submit">Subir y leer columnas</button>
+              </form>
+              <p id="uploadMessage" class="message"></p>
+            </section>
+
+            <section class="wizard-panel" data-panel="2" hidden>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Paso 2</p>
+                  <h2>Revisar columnas y vista previa</h2>
+                </div>
+                <label class="sheet-picker">
+                  Hoja
+                  <select id="sheetSelect"></select>
+                </label>
+              </div>
+              <div id="headersList" class="chip-list"></div>
+              <div id="columnProfileList" class="column-profile-grid"></div>
+              <div id="previewTable" class="table-wrap"></div>
+            </section>
+
+            <section class="wizard-panel" data-panel="3" hidden>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Paso 3</p>
+                  <h2>Mapear datos</h2>
+                </div>
+                <div class="mapping-actions">
+                  <select id="mappingPreset" class="short-input">
+                    <option value="">Usar mapeo guardado</option>
+                  </select>
+                  <input id="mappingName" class="short-input" placeholder="Nombre para guardar" />
+                </div>
+              </div>
+              <form id="mappingForm" class="mapping-grid"></form>
+              <p id="mappingMessage" class="message"></p>
+            </section>
+
+            <section class="wizard-panel" data-panel="4" hidden>
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Paso 4</p>
+                  <h2>Validar y descargar</h2>
+                </div>
+              </div>
+              <p id="processMessage" class="message"></p>
+              <div id="processStats" class="summary-grid"></div>
+              <div id="downloadArea" class="download-area"></div>
+              <section id="duplicatesSection" class="report-section">
+                <div class="section-heading">
+                  <h2>Duplicados</h2>
+                  <p id="duplicatesMessage" class="muted"></p>
+                </div>
+                <div id="duplicatesPreview" class="table-wrap"></div>
+              </section>
+              <details class="report-details">
+                <summary>Registros validos</summary>
+                <div id="processedPreview" class="table-wrap"></div>
+              </details>
+            </section>
+          </section>
+        </section>
+
+        <section id="rutTool" class="tool-section" data-tool-panel="rut">
+          <div class="tool-page-grid rut-grid">
+            <article class="tool-card">
+              <span class="tool-icon">LISTA</span>
+              <h2>Lista RUT</h2>
+              <form id="rutBulkForm" class="stack compact">
+                <textarea id="rutBulkInput" rows="7" placeholder="121086298&#10;11.111.111-1"></textarea>
+                <button type="submit">Normalizar lista</button>
+              </form>
+              <div id="rutBulkResult" class="result-zone"></div>
+            </article>
+
+            <article class="tool-card">
+              <span class="tool-icon">XLS</span>
+              <h2>RUTs desde Excel</h2>
+              <form id="rutExcelUploadForm" class="upload-box">
+                <input id="rutExcelFile" type="file" accept=".xlsx,.xls" required />
+                <button type="submit">Subir Excel</button>
+              </form>
+              <div id="rutExcelControls" class="excel-controls" hidden>
+                <label>
+                  Hoja
+                  <select id="rutSheetSelect"></select>
+                </label>
+                <label>
+                  Columna RUT
+                  <select id="rutColumnSelect"></select>
+                </label>
+                <button id="rutExcelProcessButton" class="primary-button" type="button">
+                  Normalizar columna
+                </button>
+              </div>
+              <div id="rutExcelResult" class="result-zone"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="textTool" class="tool-section" data-tool-panel="text">
+          <div class="tool-page-grid text-grid">
+            <article class="tool-card text-paste-card">
+              <span class="tool-icon">TXT</span>
+              <h2>Lista de textos</h2>
+              <form id="textToolForm" class="stack compact">
+                <textarea id="textInput" rows="6" placeholder="  CONSTANZA   GAETE&#10;juan perez"></textarea>
+                <div class="inline-form">
+                  <select id="textMode">
+                    <option value="lower">minusculas</option>
+                    <option value="upper">MAYUSCULAS</option>
+                    <option value="capitalize" selected>Capitalizar nombres</option>
+                    <option value="none">Limpiar espacios</option>
+                  </select>
+                  <button type="submit">Normalizar</button>
+                </div>
+              </form>
+              <div id="textResult" class="result-zone"></div>
+            </article>
+
+            <article class="tool-card">
+              <span class="tool-icon">XLS</span>
+              <h2>Textos desde Excel</h2>
+              <form id="textExcelUploadForm" class="upload-box">
+                <input id="textExcelFile" type="file" accept=".xlsx,.xls" required />
+                <button type="submit">Subir Excel</button>
+              </form>
+              <div id="textExcelControls" class="excel-controls" hidden>
+                <label>
+                  Hoja
+                  <select id="textSheetSelect"></select>
+                </label>
+                <label>
+                  Normalizacion
+                  <select id="textExcelMode">
+                    <option value="lower">minusculas</option>
+                    <option value="upper">MAYUSCULAS</option>
+                    <option value="capitalize" selected>Capitalizar nombres</option>
+                    <option value="none">Limpiar espacios</option>
+                  </select>
+                </label>
+                <div>
+                  <p class="field-title">Columnas a normalizar</p>
+                  <div id="textColumnCheckboxes" class="checkbox-grid"></div>
+                </div>
+                <button id="textExcelProcessButton" class="primary-button" type="button">
+                  Normalizar columnas
+                </button>
+              </div>
+              <div id="textExcelResult" class="result-zone"></div>
+            </article>
+          </div>
+        </section>
+
+        <details id="secondaryDetails" class="secondary-panel">
+          <summary>Historial y administracion</summary>
+          <div class="secondary-grid">
+            <section>
+              <div class="panel-heading tight">
+                <h2>Historial</h2>
+                <button id="refreshHistoryButton" class="ghost-button" type="button">
+                  Actualizar
+                </button>
+              </div>
+              <div id="historyTable" class="table-wrap compact-table"></div>
+            </section>
+
+            <section>
+              <div class="panel-heading tight">
+                <h2>Administracion</h2>
+              </div>
+              <form id="adminForm" class="stack compact">
+                <input id="adminName" placeholder="Nombre admin" />
+                <input id="adminEmail" type="email" placeholder="email@empresa.cl" />
+                <input id="adminPassword" type="password" placeholder="Password temporal" />
+                <button type="submit">Crear administrador</button>
+              </form>
+              <p id="adminMessage" class="message"></p>
+              <div id="usersTable" class="table-wrap compact-table"></div>
+            </section>
+          </div>
+        </details>
+      </main>
+    </div>
+
+    <div id="validationOverlay" class="loading-overlay" hidden>
+      <div class="loading-modal" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2>Validando archivo...</h2>
+      </div>
+    </div>
+
+    <script type="module" src="./src/pages/app.js"></script>
+  </body>
+</html>
