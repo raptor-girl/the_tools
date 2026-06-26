@@ -183,10 +183,4 @@ Normalizar Excel:
 - `GET /api/users`
 - `POST /api/users`
 
-## Siguiente etapa sugerida
 
-- Mejorar gestion de usuarios: desactivar, cambiar password y roles futuros.
-- Agregar pruebas automatizadas para RUT, detector de columnas y generador Moodle.
-- Permitir descargar tambien CSV si Moodle lo requiere.
-- Agregar persistencia de sesiones en MySQL para produccion.
-- Revisar alternativa a `xlsx` si se decide evitar sus avisos conocidos de `npm audit`.
